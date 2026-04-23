@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Eloundou Christelle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Bebas+Neue&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --noir: #0a0a0a;
+      --or: #c9a84c;
+      --or-clair: #e8c97a;
+      --creme: #f5f0e8;
+      --gris: #888;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--noir);
+      color: var(--creme);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    .cursor {
+      width: 12px; height: 12px;
+      background: var(--or);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.15s ease;
+    }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 1px solid var(--or);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      opacity: 0.5;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.6;
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      padding: 4rem 2rem;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 60% 40%, rgba(201,168,76,0.12) 0%, transparent 65%),
+                  radial-gradient(ellipse at 20% 80%, rgba(201,168,76,0.06) 0%, transparent 50%);
+      z-index: 0;
+    }
+
+    .hero-line {
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 120px;
+      background: linear-gradient(to bottom, transparent, var(--or));
+      animation: growLine 1.5s ease forwards;
+    }
+
+    @keyframes growLine {
+      from { height: 0; opacity: 0; }
+      to   { height: 120px; opacity: 1; }
+    }
+
+    .subtitle-top {
+      font-size: 0.7rem;
+      letter-spacing: 0.4em;
+      color: var(--or);
+      text-transform: uppercase;
+      position: relative;
+      z-index: 1;
+      margin-top: 130px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 1s forwards;
+    }
+
+    .hero-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(5rem, 18vw, 14rem);
+      line-height: 0.88;
+      letter-spacing: -0.02em;
+      position: relative;
+      z-index: 1;
+      margin: 1.5rem 0;
+      opacity: 0;
+      animation: fadeUp 1s ease 1.2s forwards;
+    }
+
+    .hero-name .first { display: block; color: var(--creme); }
+    .hero-name .last  {
+      display: block;
+      color: transparent;
+      -webkit-text-stroke: 1.5px var(--or);
+    }
+
+    .hero-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(1rem, 2.5vw, 1.5rem);
+      color: var(--gris);
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 1.5s forwards;
+      max-width: 500px;
+    }
+
+    .deco-line {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin: 2.5rem auto;
+      width: fit-content;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 1.7s forwards;
+    }
+    .deco-line span { width: 60px; height: 1px; background: var(--or); }
+    .deco-line i { width: 6px; height: 6px; border: 1px solid var(--or); transform: rotate(45deg); display: block; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* SCROLL */
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 2.2s forwards;
+    }
+    .scroll-hint span { font-size: 0.6rem; letter-spacing: 0.3em; color: var(--gris); text-transform: uppercase; }
+    .scroll-arrow { width: 1px; height: 40px; background: linear-gradient(to bottom, var(--or), transparent); animation: scrollPulse 1.8s ease-in-out infinite; }
+    @keyframes scrollPulse { 0%,100%{opacity:0.3} 50%{opacity:1} }
+
+    /* SECTIONS */
+    .content-section {
+      padding: 6rem 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.45em;
+      color: var(--or);
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 2rem;
+    }
+    .section-title em { font-style: italic; color: var(--or-clair); }
+
+    .section-body { color: var(--gris); line-height: 1.8; max-width: 680px; }
+
+    /* CARDS */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .card {
+      border: 1px solid rgba(201,168,76,0.15);
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+      background: rgba(255,255,255,0.02);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(201,168,76,0.06), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .card:hover { border-color: rgba(201,168,76,0.5); transform: translateY(-4px); }
+    .card:hover::before { opacity: 1; }
+
+    .card-num { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: rgba(201,168,76,0.15); line-height: 1; margin-bottom: 1rem; }
+    .card h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 600; margin-bottom: 0.75rem; }
+    .card p { font-size: 0.9rem; color: var(--gris); line-height: 1.7; }
+
+    /* QUOTE */
+    .quote-wrap {
+      padding: 4rem 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+    .quote-inner {
+      border-left: 2px solid var(--or);
+      padding: 2rem 3rem;
+    }
+    blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(1.3rem, 3vw, 2rem);
+      font-weight: 300;
+      line-height: 1.5;
+    }
+    cite {
+      display: block;
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      color: var(--or);
+      text-transform: uppercase;
+      margin-top: 1.5rem;
+      font-style: normal;
+    }
+
+    .hr-gold { width: 100%; height: 1px; background: linear-gradient(to right, transparent, var(--or), transparent); opacity: 0.3; }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 4rem 2rem;
+      position: relative;
+      z-index: 1;
+    }
+    .footer-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 0.3em; color: var(--or); }
+    .footer-copy { font-size: 0.75rem; color: var(--gris); margin-top: 0.75rem; letter-spacing: 0.15em; }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-line"></div>
+
+    <p class="subtitle-top">Bienvenue sur la page de</p>
+
+    <h1 class="hero-name">
+      <span class="first">Eloundou</span>
+      <span class="last">Christelle</span>
+    </h1>
+
+    <p class="hero-tagline">
+      Une âme curieuse, une vision claire, une présence lumineuse.
+    </p>
+
+    <div class="deco-line">
+      <span></span><i></i><span></span>
+    </div>
+
+    <div class="scroll-hint">
+      <span>Découvrir</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <div class="hr-gold"></div>
+
+  <!-- À PROPOS -->
+  <div class="content-section">
+    <p class="section-label">À propos</p>
+    <h2 class="section-title">Une personnalité <em>d'exception</em></h2>
+    <p class="section-body">
+      Eloundou Christelle incarne l'élégance, la détermination et la générosité.
+      Portée par une énergie unique, elle laisse une empreinte mémorable dans
+      chaque espace qu'elle traverse. Sa passion pour l'excellence guide chacun
+      de ses pas et inspire ceux qui l'entourent.
+    </p>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-num">01</div>
+        <h3>Vision</h3>
+        <p>Voir au-delà de l'horizon et transformer chaque rêve en réalité concrète et tangible.</p>
+      </div>
+      <div class="card">
+        <div class="card-num">02</div>
+        <h3>Détermination</h3>
+        <p>Avancer avec force et constance, quelles que soient les épreuves rencontrées sur le chemin.</p>
+      </div>
+      <div class="card">
+        <div class="card-num">03</div>
+        <h3>Lumière</h3>
+        <p>Rayonner avec authenticité et illuminer l'existence de ceux qui croisent sa route.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="hr-gold"></div>
+
+  <!-- CITATION -->
+  <div class="quote-wrap">
+    <div class="quote-inner">
+      <blockquote>
+        « La grandeur ne se mesure pas à la hauteur où l'on s'élève,
+          mais à la façon dont on tend la main aux autres en chemin. »
+      </blockquote>
+      <cite>— Eloundou Christelle</cite>
+    </div>
+  </div>
+
+  <div class="hr-gold"></div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-name">Eloundou Christelle</div>
+    <p class="footer-copy">&copy; 2026 — Tous droits réservés &nbsp;·&nbsp; Conçu avec soin</p>
+  </footer>
+
+  <script>
+    const cursor = document.getElementById('cursor');
+    const ring   = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.left = (mx - 6) + 'px';
+      cursor.style.top  = (my - 6) + 'px';
+    });
+
+    (function animateRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = (rx - 18) + 'px';
+      ring.style.top  = (ry - 18) + 'px';
+      requestAnimationFrame(animateRing);
+    })();
+
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('mouseenter', () => cursor.style.transform = 'scale(2)');
+      card.addEventListener('mouseleave', () => cursor.style.transform = 'scale(1)');
+    });
+  </script>
+</body>
+</html>
